@@ -1,0 +1,35 @@
+version: 2.1
+jobs:
+  build:
+    machine
+    steps:
+      - checkout 
+      - docker build -t hansel-api-$SHA
+
+  test:
+    machine:
+    steps:
+      - docker container run -d -p 8000:5000 
+      - run: 
+          command: >
+            http_response=$(curl -i localhost:8080 | head -n 1 | cut -f 2 -d ' ')
+            if [$http_response -ne 200]
+              exit 0
+            fi
+  
+  pushImage:
+    machine:
+    steps:
+      - docker login -u $username --password-stdin $password
+      - docker push 
+
+
+workflows:
+  version: 2
+
+  build-test-deploy:
+    jobs:
+      - build
+      - test:
+        - requires:
+            - build

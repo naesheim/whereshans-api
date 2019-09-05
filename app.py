@@ -5,8 +5,10 @@ from datetime import datetime as dt
 
 app = Flask('WheresHansel')
 
+dblocation = os.environ('PERSISTENT_STORAGE')
+
 def get_pwd_path():
-    dirpath = os.getcwd()
+    dirpath = dblocation
     DBPATH = dirpath + '/locations.db'
     return DBPATH
 
@@ -46,7 +48,7 @@ def add_new_location():
     except ValueError:
         return jsonify({'status': '-_- ...plz'})
         
-    if -90 < latitude < 90.0 and -90.0 < longitude < 90.0: 
+    if -90 < latitude < 90.0 and -90.0 < longitude < 90.0:
         time = dt.now()
         sqlstring = "INSERT INTO locations (latitude, longitude, time) VALUES(?,?,?)"
         db = get_db()

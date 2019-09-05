@@ -1,0 +1,7 @@
+CREATE TABLE locations 
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+latitude FLOAT NOT NULL,
+longitude FLOAT NOT NULL,
+time TIME NOT NULL);
+
+
