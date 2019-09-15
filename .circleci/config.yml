@@ -1,13 +1,13 @@
 version: 2.1
 jobs:
-  build:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - checkout 
-      - run:
-          command: |
-            docker build -t whereshansel_api_$CIRCLE_SHA1 .
+  # build:
+  #   machine:
+  #     image: ubuntu-1604:201903-01
+  #   steps:
+  #     - checkout 
+  #     - run:
+  #         command: |
+  #           docker build -t whereshansel_api_$CIRCLE_SHA1 .
 
   # test:
   #   machine:
@@ -21,13 +21,14 @@ jobs:
   #             exit 0
   #           fi
   
-  pushImage:
+  build:
     machine:
       image: ubuntu-1604:201903-01
     steps:
+      - checkout
       - run:
           command: |
-            docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_PASS
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASS
             docker build -t whereshansel_api_$CIRCLE_SHA1 .
             docker push naesheim/whereshansel_api_$CIRCLE_SHA1
   
@@ -46,9 +47,6 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      # - test:
-      #     requires:
-      #       - build
-      - pushImage:
+      - deployApp:
           requires:
             - build
