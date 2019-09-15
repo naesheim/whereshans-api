@@ -5,6 +5,6 @@ COPY . /code
 WORKDIR /code
 RUN pip3 install -r requirements.txt
 
-ENTRYPOINT python3@
-CMD app.py
+ENV PERSISTENT_STORAGE '/code'
+CMD python3 app.py
 

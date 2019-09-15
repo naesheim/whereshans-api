@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 app = Flask('WheresHansel')
 
-dblocation = os.environ('PERSISTENT_STORAGE')
+dblocation = os.environ['PERSISTENT_STORAGE']
 
 def get_pwd_path():
     dirpath = dblocation
