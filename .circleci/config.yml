@@ -39,7 +39,8 @@ jobs:
       - checkout
       - run:
           command: |
-            helm package deploy/whereshans-api/Chart.yaml
+            helm init --client-only
+            helm package deploy/whereshans-api
             helmsman --apply -f deploy/api.toml
 
 workflows:
