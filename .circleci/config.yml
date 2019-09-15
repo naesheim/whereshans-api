@@ -29,13 +29,14 @@ jobs:
       - run:
           command: |
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASS
-            docker build -t naesheim/whereshansel_api:$CIRCLE_SHA1 .
-            docker push naesheim/whereshansel_api:$CIRCLE_SHA1
+            docker build -t naesheim/whereshans_api:$CIRCLE_SHA1 .
+            docker push naesheim/whereshans_api:$CIRCLE_SHA1
   
   deployApp:
     docker:
     - image: praqma/helmsman:v1.12.0-helm-v2.14.3
     steps:
+      - checkout
       - run:
           command: |
             helm package deploy/whereshans-api/Chart.yaml
