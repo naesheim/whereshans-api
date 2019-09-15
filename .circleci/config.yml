@@ -38,7 +38,7 @@ jobs:
     steps:
       - run:
           command: |
-            helm package deploy/whereshans-api
+            helm package deploy/whereshans-api/Chart.yaml
             helmsman --apply -f deploy/api.toml
 
 workflows:
