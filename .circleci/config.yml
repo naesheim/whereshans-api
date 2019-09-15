@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout 
       - run:
-          command: docker build -t hansel-api-$SHA
+          command: docker build -t whereshansel_api_$CIRCLE_SHA1
 
   test:
     machine:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - run: 
           command: |
-            docker container run -d -p 8000:5000 
+            docker container run -d -p 8000:5000 whereshansel_api_$CIRCLE_SHA1
             http_response=$(curl -i localhost:8080 | head -n 1 | cut -f 2 -d ' ')
             if [$http_response -ne 200]
               exit 0
@@ -26,8 +26,16 @@ jobs:
     steps:
       - run:
           command: |
-            docker login -u $username --password-stdin $password
-            docker push 
+            docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_PASS
+            docker push naesheim/whereshansel_api_$CIRCLE_SHA1
+  
+  deployApp:
+    docker:
+    - image: praqma/helmsman:v1.12.0-helm-v2.14.3
+    steps:
+      - run:
+          command: |
+            helmsman --apply -f apps/app.toml
 
 workflows:
   version: 2
