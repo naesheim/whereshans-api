@@ -1,0 +1,112 @@
+{{- $containers := .Values.containers }}
+{{- if gt (len $containers) 0 }}
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    app: {{ template "app.fullname" . }}
+    chart: {{ template "app.chart" . }}
+    release: {{ .Release.Name }}-{{ .Chart.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "app.fullname" . }}
+      release: {{ .Release.Name }}-{{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "app.fullname" . }}
+        release: {{ .Release.Name }}-{{ .Chart.Name }}
+    spec:
+      {{- if .Values.initContainers }}
+      initContainers:
+         {{- range .Values.initContainers }}
+        - name: {{ .name }}
+          image: "{{ .image }}:{{ .tag }}"
+          imagePullPolicy: {{ .imagePullPolicy }}
+          {{- if .args }}
+          args:
+            {{- range .args }}
+            - {{ . }}
+            {{- end }}
+          {{- end }}
+          {{- if .volumeMounts }}
+          volumeMounts:
+            {{- range .volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+          {{- end }}
+         {{- end }}
+      {{- end }}
+      containers:
+      {{- range $containers }}
+        - name: {{ .name }}
+          image: "{{ .image }}:{{ .tag }}"
+          imagePullPolicy: {{ .pullPolicy }}
+          env:
+        {{- range $key, $value := .environment }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+        {{- end }}
+        {{- range $.Values.services }}
+          - name: {{ .name | upper }}_HOSTNAME
+            value: {{ $.Release.Name }}-{{ template "app.fullname" $ }}-{{ .name }}
+        {{- end }}
+        {{- if .args }}
+          args:
+          {{- range .args }}
+            - {{ . }}
+          {{- end }}
+        {{- end }}
+          ports:
+{{ toYaml .ports | indent 12 }}
+        {{- if .livenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: {{ .livenessProbe.path }}
+              port: {{ .livenessProbe.port }}
+        {{- end }}
+        {{- if .readinessProbe }}
+          readinessProbe:
+            httpGet:
+              path: {{ .readinessProbe.path }}
+              port: {{ .readinessProbe.port }}
+        {{- end }}
+        {{- if .volumeMounts }}
+          volumeMounts:
+{{ toYaml .volumeMounts | indent 12 }}
+        {{- end }}
+          resources:
+{{ toYaml .resources | indent 12 }}
+        {{- end }} # end for the range over containers
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.imagePullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+    {{- end }}
+    {{- if .Values.volumes }}
+      volumes:
+{{ toYaml .Values.volumes | indent 8 }}
+    {{- end }}
+    {{- if .Values.restartPolicy }}
+      restartPolicy: {{ .Values.restartPolicy }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+
+{{- end }}

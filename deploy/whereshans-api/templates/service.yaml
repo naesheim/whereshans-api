@@ -1,0 +1,34 @@
+{{- $services := .Values.services }}
+{{- if $services }}
+{{- range $services }}
+apiVersion: v1
+kind: Service
+metadata:
+  {{- if .expandName }}
+  name: {{ $.Release.Name }}-{{ template "app.fullname" $ }}-{{ .name }}
+  {{- else }}
+  name: {{ .name }}
+  {{- end }}
+  labels:
+    app: {{ template "app.fullname" $ }}
+    chart: {{ template "app.chart" $ }}
+    release: {{ $.Release.Name }}-{{ $.Chart.Name }}
+    heritage: {{ $.Release.Service }}
+spec:
+  type: {{ .type }}
+  ports:
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .proto | default "TCP" }}
+  {{- if .selector }}
+  selector:
+    app: {{ .selector.app }}
+    release: {{ .selector.release }}
+  {{- else }}
+  selector:
+    app: {{ template "app.fullname" $ }}
+    release: {{ $.Release.Name }}-{{ $.Chart.Name }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

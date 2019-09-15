@@ -1,0 +1,28 @@
+[certificates]
+caCrt    = "gs://naesheim-home-terraform/keys/cluster_ca_certificate.crt"
+caKey    = "gs://naesheim-home-terraform/keys/cluster_client_key.key"
+caClient = "gs://naesheim-home-terraform/keys/client_certificate.crt"
+
+[settings]
+kubeContext = "k8s-gcloud"
+username = "$CLUSTER_USERNAME"
+password = "$CLUSTER_PASSWORD" 
+clusterURI = "${ENDPOINT}"
+
+[helmRepos]
+local = "http://127.0.0.1:8879"
+
+[namespaces.default]
+    useTiller = true
+
+# define the desired state of your applications helm charts
+# each contains the following:
+
+[apps]
+    [apps.api]
+    name = "whereshansel_api"
+    description = "hansel api"
+    namespace = "default"
+    enabled = true
+    chart = "local/whereshans-api"
+    version = "0.1.0"

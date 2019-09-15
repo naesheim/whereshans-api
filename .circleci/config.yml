@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout 
       - run:
-          command: docker build -t whereshansel_api_$CIRCLE_SHA1
+          command: docker build -t whereshansel_api_$CIRCLE_SHA1 .
 
   test:
     machine:
@@ -35,7 +35,8 @@ jobs:
     steps:
       - run:
           command: |
-            helmsman --apply -f apps/app.toml
+            helm package deploy/whereshans-api
+            helmsman --apply -f deploy/api.toml
 
 workflows:
   version: 2
