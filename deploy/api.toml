@@ -20,7 +20,7 @@ clusterURI = "${ENDPOINT}"
 
 [apps]
     [apps.api]
-    name = "whereshansel_api"
+    name = "whereshansel-api"
     description = "hansel api"
     namespace = "default"
     enabled = true
