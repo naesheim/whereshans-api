@@ -3,7 +3,7 @@ fullnameOverride: "whereshans"
 replicaCount: 1
 
 containers:
-   - name: api
+  - name: api
     image: naesheim/whereshans_api
     tag: latest
     pullPolicy: Always
@@ -14,17 +14,17 @@ containers:
       - name: vol
         mountPath: /tmp/database
 
-     ports:
-       - name: "my-port"
-         containerPort: 5000
-         protocol: TCP
-     resources:
-       limits:
-         cpu: 400m
-         memory: 248Mi
-       requests:
-         cpu: 100m
-         memory: 128Mi
+    ports:
+      - name: "my-port"
+        containerPort: 5000
+        protocol: TCP
+    resources:
+      limits:
+        cpu: 400m
+        memory: 248Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
 services:
   - name: api
