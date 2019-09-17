@@ -24,5 +24,7 @@ clusterURI = "${ENDPOINT}"
     description = "hansel api"
     namespace = "default"
     enabled = true
-    chart = "whereshans-api/whereshans-api-0.1.0.tgz"
+    chart = "../whereshans-api-0.1.0.tgz"
     version = "0.1.0"
+    [apps.api.set]
+    "containers.tag" = "${CIRCLE_SHA}"
