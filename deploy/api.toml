@@ -9,8 +9,8 @@ username = "$CLUSTER_USERNAME"
 password = "$CLUSTER_PASSWORD" 
 clusterURI = "${ENDPOINT}"
 
-[helmRepos]
-local = "http://127.0.0.1:8879"
+# [helmRepos]
+# local = "http://127.0.0.1:8879"
 
 [namespaces.default]
     useTiller = true
@@ -24,5 +24,5 @@ local = "http://127.0.0.1:8879"
     description = "hansel api"
     namespace = "default"
     enabled = true
-    chart = "local/whereshans-api"
+    chart = "whereshans-api/whereshans-api-0.1.0.tgz"
     version = "0.1.0"
