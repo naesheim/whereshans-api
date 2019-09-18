@@ -38,8 +38,8 @@ services:
     targetPort: 5000
     proto: TCP
     selector:
-      app: whereshansel
-      release: whereshansel-whereshansel
+      app: whereshans-api
+      release: whereshans-whereshans
 
 ingress:
   enabled: true
@@ -56,6 +56,6 @@ ingress:
     kubernetes.io/tls-acme: "true"
 
   tls:
-    - secretName: whereshans
+    - secretName: whereshans-api
       hosts:
         - api.naesheim.com
