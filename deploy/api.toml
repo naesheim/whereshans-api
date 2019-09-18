@@ -21,7 +21,7 @@ clusterURI = "${ENDPOINT}"
 [apps]
     [apps.api]
     name = "whereshans-api"
-    description = "hansel api"
+    description = "hans api"
     namespace = "default"
     enabled = true
     chart = "../whereshans-api-0.1.0.tgz"
