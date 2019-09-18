@@ -11,7 +11,7 @@ containers:
         PERSISTENT_STORAGE: /tmp/database
 
     volumeMounts:
-      - name: vol
+      - name: location-data
         mountPath: /tmp/database
 
     ports:
@@ -25,6 +25,11 @@ containers:
       requests:
         cpu: 100m
         memory: 128Mi
+
+volumes:
+  - name: location-data
+    persistentVolumeClaim:
+      claimName: location-vol 
 
 services:
   - name: api
