@@ -29,7 +29,7 @@ containers:
 volumes:
   - name: location-data
     persistentVolumeClaim:
-      claimName: location-vol 
+      claimName: location-claim
 
 services:
   - name: api
