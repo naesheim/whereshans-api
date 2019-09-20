@@ -9,8 +9,8 @@ username = "$CLUSTER_USERNAME"
 password = "$CLUSTER_PASSWORD" 
 clusterURI = "${ENDPOINT}"
 
-[helmRepos]
-local = "http://127.0.0.1:8879"
+# [helmRepos]
+# local = "http://127.0.0.1:8879"
 
 [namespaces.default]
     useTiller = true

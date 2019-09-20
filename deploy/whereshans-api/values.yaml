@@ -39,7 +39,7 @@ services:
     proto: TCP
     selector:
       app: whereshans-api
-      release: whereshans-whereshans
+      release: whereshans-api-whereshans-api
 
 ingress:
   enabled: true
