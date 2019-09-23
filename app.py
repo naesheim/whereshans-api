@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 app = Flask('WheresHansel')
 
-dblocation = os.environ['PERSISTENT_STORAGE']
+dblocation = os.environ['PERSISTENT_STORAGE'] if 'PERSISTENT_STORAGE' in os.environ else "."
 
 def get_pwd_path():
     dirpath = dblocation
@@ -64,7 +64,10 @@ def add_new_location():
 def get_latest_location():
     cur = get_db().cursor()
     result = cur.execute('SELECT * FROM locations ORDER BY id DESC LIMIT 1;').fetchone()
-    return jsonify(result)
+    return jsonify(
+        latitude=result[1],
+        longitude=result[2],
+        time=result[3])
 
 
 if __name__ == '__main__':
